@@ -42,15 +42,6 @@ endfunction
 " confirm
 "
 function! compe#confirm(...) abort
-  let l:completeopts = split(&completeopt, ',')
-  for l:opt in ['menuone', 'noselect']
-    if index(l:completeopts, l:opt) == -1
-      echohl ErrorMsg
-      echomsg '[nvim-compe] You must set `set completeopt=menuone,noselect` in your vimrc.'
-      echohl None
-    endif
-  endfor
-
   let l:option = s:normalize(get(a:000, 0, {}))
   let l:index = complete_info(['selected']).selected
   let l:select = get(l:option, 'select', v:false)
