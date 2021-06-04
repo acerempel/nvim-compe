@@ -41,18 +41,21 @@ endfunction
 "
 " confirm
 "
+inoremap <silent> <Plug>(compe-confirm) <C-r>=luaeval('require"compe"._confirm()')<CR>
 function! compe#confirm(...) abort
   let l:option = s:normalize(get(a:000, 0, {}))
   let l:index = complete_info(['selected']).selected
   let l:select = get(l:option, 'select', v:false)
   let l:selected = l:index != -1
   if mode()[0] ==# 'i' && pumvisible() && (l:select || l:selected)
-    call timer_start(0, { -> luaeval('require"compe"._confirm(_A)', { 'index': l:selected ? l:index : 0 }) })
+    let l:info = luaeval('require"compe"._info()')
+    call feedkeys(repeat("\<BS>", col('.') - l:info.offset), 'n')
+    call feedkeys(l:info.item.word, 'n')
+    call feedkeys("\<Plug>(compe-confirm)", '')
     return "\<Ignore>"
   endif
   return s:fallback(l:option)
 endfunction
-inoremap <silent><nowait> <Plug>(compe-confirm) <C-y><C-r>=luaeval('require"compe"._confirm()')<CR>
 
 "
 " compe#close
