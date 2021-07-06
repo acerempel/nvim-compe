@@ -97,21 +97,16 @@ end
 
 --- _create_document
 function Source._create_document(self, filetype, completion_item)
-  local document = {}
-  if completion_item.detail and completion_item.detail ~= '' then
-    table.insert(document, '```' .. filetype)
-    table.insert(document, completion_item.detail)
-    table.insert(document, '```')
+  local doc = completion_item.documentation or {}
+  if type(doc) == "string" then
+    doc = string.format("```%s\n%s\n```", filetype, doc)
   end
-  if completion_item.documentation then
-    if completion_item.detail then
-      table.insert(document, ' ')
-    end
-    for _, line in ipairs(util.convert_input_to_markdown_lines(completion_item.documentation)) do
-      table.insert(document, line)
-    end
+  -- HACK: make a deepcopy to prevent double escaping of plaintext
+  -- see also https://github.com/hrsh7th/nvim-compe/issues/440
+  if type(doc) == "table" then
+    doc = vim.tbl_deep_extend("force", {}, doc)
   end
-  return document
+  return doc and util.convert_input_to_markdown_lines(doc) or {}
 end
 
 --- _get_paths

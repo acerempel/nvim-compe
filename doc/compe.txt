@@ -376,7 +376,7 @@ vsnip               vim-vsnip completion.
 ultisnips           UltiSnips completion.
 luasnip             LuaSnip completion.
 snippets_nvim       snippets.nvim completion.
-nvim_treesitter     nvim-treesitter completion. (Warning: it sometimes really slow.)
+treesitter          nvim-treesitter completion. (Warning: it sometimes really slow.)
 
 
 ------------------------------------------------------------------------------
@@ -408,6 +408,7 @@ Vimscript:
   let g:compe.source.nvim_lsp = v:true
   let g:compe.source.nvim_lua = v:true
   let g:compe.source.vsnip = v:true
+  let g:compe.source.ultisnips = v:true
   let g:compe.source.luasnip = v:true
   let g:compe.source.emoji = v:true
 <
@@ -435,6 +436,7 @@ Lua:
       nvim_lsp = true;
       nvim_lua = true;
       vsnip = true;
+      ultisnips = true;
       luasnip = true;
       emoji = true;
     };
