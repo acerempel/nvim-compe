@@ -101,14 +101,18 @@ end
 --- _create_document
 function Source._create_document(_, filetype, completion_item)
   local detail = (function()
-    if completion_item.detail then
+    if completion_item.detail and completion_item.detail ~= '' then
       return string.format("```%s\n%s\n```", filetype, completion_item.detail)
     end
   end)()
   local doc = (function()
     local doc = completion_item.documentation or {}
     if type(doc) == "string" then
-      doc = string.format("```%s\n%s\n```", filetype, doc)
+      if doc == "" then
+        doc = nil
+      else
+        doc = string.format("```%s\n%s\n```", filetype, doc)
+      end
     else
       doc = vim.tbl_deep_extend('force', {}, doc)
     end
